@@ -1,0 +1,268 @@
+
+body {
+font-family: 'Inter', sans-serif;
+color: #333;
+background-color: #fafafa;
+scroll-behavior: smooth;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+from { transform: scale(0.95); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+@keyframes slideInLeft {
+from { transform: translateX(-30px); opacity: 0; }
+to { transform: translateX(0); opacity: 1; }
+}
+.animate-on-scroll {
+opacity: 0;
+animation: fadeIn 0.8s ease-out forwards;
+}
+.button-hover {
+transition: all 0.3s ease;
+}
+.button-hover:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.icon-hover {
+transition: all 0.3s ease;
+}
+.icon-hover:hover {
+transform: scale(1.1);
+color: var(--primary-color);
+}
+.section-fade {
+opacity: 0;
+transform: translateY(20px);
+transition: all 0.8s ease-out;
+}
+.section-fade.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.serif {
+font-family: 'Playfair Display', serif;
+}
+.hero-bg {
+background: linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0) 100%);
+}
+.nav-link {
+position: relative;
+}
+.nav-link::after {
+content: '';
+position: absolute;
+width: 0;
+height: 2px;
+bottom: -4px;
+left: 0;
+background-color: #F9A826;
+transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after {
+width: 100%;
+}
+.filter-button {
+transition: all 0.3s ease;
+}
+.filter-button.active {
+background-color: #333333;
+color: white;
+}
+.project-card {
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.project-card:hover {
+transform: translateY(-5px) scale(1.02);
+box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+}
+.project-card:hover img {
+transform: scale(1.05);
+}
+.project-card img {
+transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.project-overlay {
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+.project-card:hover .project-overlay {
+opacity: 1;
+}
+.value-card {
+transition: transform 0.3s ease;
+}
+.value-card:hover {
+transform: translateY(-5px);
+}
+input:focus, textarea:focus {
+outline: none;
+border-color: #F9A826;
+}
+.custom-checkbox {
+appearance: none;
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+border: 2px solid #333;
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+position: relative;
+}
+.custom-checkbox:checked {
+background-color: #333;
+}
+.custom-checkbox:checked::after {
+content: '';
+position: absolute;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+top: 2px;
+left: 6px;
+transform: rotate(45deg);
+}
+.scroll-container {
+overflow-x: auto;
+scrollbar-width: none;
+}
+.scroll-container::-webkit-scrollbar {
+display: none;
+}
+.process-step {
+opacity: 0;
+transform: translateY(20px);
+transition: all 0.6s ease-out;
+}
+.process-step.animate {
+opacity: 1;
+transform: translateY(0);
+}
+.process-step-mobile {
+opacity: 0;
+transform: translateX(-30px);
+transition: all 0.6s ease-out;
+}
+.process-step-mobile.animate {
+opacity: 1;
+transform: translateX(0);
+}
+.process-line {
+transition: width 2s ease-out;
+}
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.05); }
+100% { transform: scale(1); }
+}
+.process-step.active .w-16 {
+border-color: #F9A826;
+animation: pulse 2s infinite;
+}
+.process-step.active .w-16 i {
+color: #F9A826;
+}
+.perspective-1000 {
+perspective: 1000px;
+}
+.transform-style-preserve-3d {
+transform-style: preserve-3d;
+}
+.backface-hidden {
+backface-visibility: hidden;
+}
+.rotate-y-180 {
+transform: rotateY(180deg);
+}
+.testimonial-card {
+height: 16rem;
+}
+.insight-card {
+transition: all 0.3s ease;
+}
+.insight-card:hover {
+transform: translateY(-2px);
+}
+.insight-filter.active {
+background-color: #333333;
+color: white;
+}
+.moodboard-item {
+break-inside: avoid;
+margin-bottom: 1.5rem;
+transition: all 0.3s ease;
+}
+.moodboard-item:hover {
+transform: translateY(-2px);
+}
+.masonry-grid {
+column-count: 1;
+column-gap: 1.5rem;
+}
+@media (min-width: 640px) {
+.masonry-grid {
+column-count: 2;
+}
+}
+@media (min-width: 1024px) {
+.masonry-grid {
+column-count: 3;
+}
+}
+@media (min-width: 1280px) {
+.masonry-grid {
+column-count: 4;
+}
+}
+.sketch-line {
+stroke-dasharray: 1000;
+stroke-dashoffset: 1000;
+animation: draw 2s ease-in-out forwards;
+}
+@keyframes draw {
+to {
+stroke-dashoffset: 0;
+}
+}
+.bounce-in {
+animation: bounceIn 0.8s ease-out;
+}
+@keyframes bounceIn {
+0% {
+transform: scale(0.3);
+opacity: 0;
+}
+50% {
+transform: scale(1.05);
+}
+70% {
+transform: scale(0.9);
+}
+100% {
+transform: scale(1);
+opacity: 1;
+}
+}
+
+/* Ensure both front and back hide when flipped */
+.testimonial-front,
+.testimonial-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Rotate the back side */
+.testimonial-back {
+  transform: rotateY(180deg);
+}
+
+/* Flip card on hover */
+.group:hover .testimonial-inner {
+  transform: rotateY(180deg);
+}
