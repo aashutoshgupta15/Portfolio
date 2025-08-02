@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (link) {
       window.open(link, '_blank'); // Opens in new tab
     } else {
-      alert('Project link not found.');
+      alert('Project link coming soon.');
     }
   });
   });
@@ -99,19 +99,24 @@ document.addEventListener('DOMContentLoaded', function() {
   // -------------------
   // Smooth scrolling for all anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        e.preventDefault();
-        window.scrollTo({
-          top: targetElement.offsetTop - 80, // Offset for fixed header
-          behavior: 'smooth'
-        });
-      }
-    });
+  anchor.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href');
+    if (targetId === '#' || targetId.length === 1) return;
+
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      e.preventDefault();
+
+      const yOffset = -80; // adjust this to match your fixed nav height
+      const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
+    }
   });
+});
   // Active nav link based on scroll position
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -170,60 +175,77 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Download Script
+  // View & Download Script
   // ---------------
   // Since :contains is not a valid CSS selector, we'll find buttons by their text content
-  const allButtons = document.querySelectorAll('button');
-  allButtons.forEach(button => {
-    if (button.textContent.includes('Download PDF')) {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        // Determine which document to download based on parent content
-        const parentText = this.closest('.flex').querySelector('h4').textContent;
-        let filename = '';
-        let message = '';
-        if (parentText.includes('Resume')) {
-          filename = 'Resume.pdf';
-          message = 'Resume download started...';
-        } else if (parentText.includes('Media Kit')) {
-          filename = 'Mediakit.pdf';
-          message = 'Media Kit download started...';
-        }
+  document.querySelectorAll('button').forEach(button => {
+  const label = button.textContent.trim();
 
-         // Trigger actual download
+  if (label === 'Download PDF' || label === 'View PDF') {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // Find parent card and section name
+      const section = this.closest('.card');
+      const heading = section.querySelector('h4')?.textContent.trim();
+
+      // Determine filename and message
+      let filename = '';
+      let message = '';
+      if (heading === 'Resume') {
+        filename = 'Resume.pdf';
+        message = 'Resume download started...';
+      } else if (heading === 'Media Kit') {
+        filename = 'Mediakit.pdf';
+        message = 'Media Kit download started...';
+      } else {
+        console.warn('Unrecognized section:', heading);
+        return;
+      }
+
+      if (label === 'View PDF') {
+        // Open PDF in a new tab
+        window.open(filename, '_blank');
+      } else if (label === 'Download PDF') {
+        // Download the PDF
         const link = document.createElement('a');
-        link.href = filename; // Assumes file is in the same directory or accessible path
+        link.href = filename;
         link.download = filename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        // Show download feedback
+        // Button feedback
         const originalText = this.textContent;
         this.textContent = 'Downloading...';
         this.disabled = true;
-        // Create a temporary notification
+
+        // Show notification
         const notification = document.createElement('div');
         notification.className = 'fixed top-4 right-4 bg-secondary text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full';
         notification.textContent = message;
         document.body.appendChild(notification);
-        // Animate notification in
+
+        // Animate in
         setTimeout(() => {
           notification.classList.remove('translate-x-full');
-        }, 100);
-        // Simulate download process
+        }, 50);
+
+        // Reset button and remove notification
         setTimeout(() => {
           this.textContent = originalText;
           this.disabled = false;
-          // Animate notification out
+
           notification.classList.add('translate-x-full');
           setTimeout(() => {
             document.body.removeChild(notification);
           }, 300);
         }, 2000);
-      });
-    }
-  });
+      }
+    });
+  }
+});
+
 
   // Process Animation Script
   // -----------------------
@@ -339,15 +361,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   // Read More functionality
-  const readMoreButtons = document.querySelectorAll('.insight-card button');
-  readMoreButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      // In a real implementation, this would open the full article
-      const title = this.closest('.insight-card').querySelector('h3').textContent;
-      alert(`Opening full article: "${title}"`);
-    });
+    const readMoreButtons = document.querySelectorAll('.insight-card button');
+    readMoreButtons.forEach(button => {
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // Get the article title for optional tracking or logging
+    const card = this.closest('.insight-card');
+    const title = card.querySelector('h3')?.textContent.trim();
+
+    // Get the URL from the data attribute
+    const articleUrl = this.getAttribute('data-url');
+
+    if (articleUrl) {
+      // Open the article in a new tab
+      window.open(articleUrl, '_blank');
+    } else {
+      // Fallback if no URL is provided
+      alert(`Full article unavailable: "${title}"`);
+    }
   });
+});
+
   // Load More functionality
   const loadMoreInsightsButton = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('Load More Insights'));
   if (loadMoreInsightsButton) {
